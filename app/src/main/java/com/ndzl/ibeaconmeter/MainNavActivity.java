@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -49,24 +50,15 @@ public class MainNavActivity extends AppCompatActivity implements BeaconConsumer
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mTextMessage.setText("");
-
                     Fragment fr_ALL = new Fragment_Allbeacons();
                     replaceFragment(fr_ALL);
-
                     return true;
                 case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
-
                     Fragment fr_ONE = new Fragment_OneBeacon();
                     replaceFragment(fr_ONE);
-
                     return true;
                 case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
-                    for (Fragment fragment:getSupportFragmentManager().getFragments()) {
-                        //getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-                    }
+
                     return true;
             }
             return false;
@@ -95,7 +87,9 @@ public class MainNavActivity extends AppCompatActivity implements BeaconConsumer
         }
 
         NameViewModel.model = ViewModelProviders.of(this).get(NameViewModel.class);
-
+        Fragment fr_ALL = new Fragment_Allbeacons();
+        replaceFragment(fr_ALL);
+        mTextMessage.setText("");
     }
 
     @Override
@@ -111,6 +105,11 @@ public class MainNavActivity extends AppCompatActivity implements BeaconConsumer
         }
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        return super.onKeyDown(keyCode, event);
+    }
 
     void startBeaconLibrary(){
         beaconManager = BeaconManager.getInstanceForApplication(this);
@@ -122,16 +121,22 @@ public class MainNavActivity extends AppCompatActivity implements BeaconConsumer
     }
 
 
+    int resetcounter=8;
+    int resetrows=10;
 
     String toBePrinted = "x";
+    int maxRssi=-1000;
+    String maxRSSI_mac="";
     void PrintOnScreen(String _s){
+
         toBePrinted = _s;
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                String _old = mTextMessage.getText().toString();
-                //mTextMessage.setText(toBePrinted+"\n"+_old);
-                NameViewModel.model.getCurrentName().setValue(toBePrinted+"\n"+_old);
+
+                NameViewModel.model.getCurrentName().setValue(toBePrinted+"\n");
+
+                NameViewModel.model.getGetmaxval().setValue(maxRSSI_mac+" "+maxRssi);
             }
         });
     }
@@ -161,16 +166,29 @@ public class MainNavActivity extends AppCompatActivity implements BeaconConsumer
             beaconManager.startMonitoringBeaconsInRegion(new Region("FE913213-B311-4A42-8C16-47FAEAC938DB", null, null, null));
         } catch (RemoteException e) {    }
 
+
         beaconManager.addRangeNotifier(new RangeNotifier() {
             @Override
             public void didRangeBeaconsInRegion(Collection beacons, Region region) {
                 if (beacons.size() > 0) {
+                    if(resetcounter--==0){
+                        maxRssi=-1000;
+                        maxRSSI_mac="";
+                        resetcounter=8;
+                    }
 
                     for (Object _b : beacons) {
                         String btAddr = ((Beacon)_b).getBluetoothAddress();
                         String bRssi = ""+((Beacon)_b).getRssi();
+
+                        if(((Beacon)_b).getRssi()>maxRssi){
+                            maxRssi = ((Beacon)_b).getRssi();
+                            maxRSSI_mac = btAddr.substring(12);
+                        }
+
                         PrintOnScreen(btAddr+" "+bRssi+" dBm");
                         Log.i(TAG, " "+btAddr+" "+bRssi+" dBm");
+
                     }
                 }
             }

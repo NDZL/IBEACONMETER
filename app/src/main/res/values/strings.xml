@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">iBeaconMeter</string>
-    <string name="title_activity_main_nav">MainNavActivity</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_main_nav">iBeacon Meter</string>
+    <string name="title_home">Stream</string>
+    <string name="title_dashboard">Chase</string>
+    <string name="title_notifications"></string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

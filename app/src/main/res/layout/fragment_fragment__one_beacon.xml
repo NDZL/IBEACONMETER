@@ -1,15 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frOneBeacon"
+<ScrollView xmlns:tools="http://schemas.android.com/tools"
+android:layout_height="match_parent"
+android:layout_width="match_parent"
+xmlns:android="http://schemas.android.com/apk/res/android">
+<RelativeLayout
+    android:id="@+id/frAllBeacons"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Fragment_OneBeacon">
+    android:layout_height="wrap_content"
+    android:scrollbars="vertical"
+    tools:context=".Fragment_Allbeacons">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/tvOneBeacon"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="ONE BEACON FRAGMENT" />
+        android:text="PLEASE SCAN THE BEACON BTADDRESS" />
 
-</FrameLayout>
+    <EditText
+        android:id="@+id/etBeaconBarcode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvOneBeacon"
+        android:editable="false"
+        android:ems="10" />
+
+    <Button
+        android:id="@+id/btChase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/tvOneBeacon"
+        android:text="Chase" />
+
+    <TextView
+        android:id="@+id/tv_chased_rssi"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/etBeaconBarcode"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="false"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="false"
+        android:text="0"
+        android:textSize="72dp" />
+
+</RelativeLayout>
+</ScrollView>

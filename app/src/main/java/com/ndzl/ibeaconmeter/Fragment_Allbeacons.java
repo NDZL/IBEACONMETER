@@ -13,6 +13,7 @@ import android.widget.TextView;
 public class Fragment_Allbeacons extends Fragment {
 
     TextView textView;
+    TextView maxRssi;
 
     public Fragment_Allbeacons() {
         // Required empty public constructor
@@ -30,10 +31,23 @@ public class Fragment_Allbeacons extends Fragment {
             @Override
             public void onChanged(@Nullable final String newName) {
                 String _cur_txt = textView.getText().toString();
+                if(_cur_txt.split("\n").length>50)
+                    _cur_txt="";
                 textView.setText(newName +_cur_txt);
             }
         };
         NameViewModel.model.getCurrentName().observeForever( nameObserver );
+
+
+
+        maxRssi = view.findViewById(R.id.tv_bigRSSI);
+        final Observer<String> maxvalObserver = new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable final String newName) {
+                maxRssi.setText(newName);
+            }
+        };
+        NameViewModel.model.getGetmaxval().observeForever( maxvalObserver );
 
         return view;
     }
