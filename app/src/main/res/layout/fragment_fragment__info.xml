@@ -4,26 +4,17 @@
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <RelativeLayout
-        android:id="@+id/frAllBeacons"
+        android:id="@+id/frInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="vertical"
-        tools:context=".Fragment_Allbeacons">
+        tools:context=".Fragment_Info">
+
 
         <TextView
-            android:layout_alignParentTop="true"
-            android:id="@+id/tv_bigRSSI"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="bigRSSI"
-            android:textSize="72dp"
-            android:layout_centerInParent="true"/>
-
-        <TextView
-            android:id="@+id/tv_list_all"
+            android:id="@+id/tv_list_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_bigRSSI"
             />
 
     </RelativeLayout>

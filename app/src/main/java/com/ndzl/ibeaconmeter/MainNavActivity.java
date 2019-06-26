@@ -25,13 +25,20 @@ import org.altbeacon.beacon.MonitorNotifier;
 import org.altbeacon.beacon.RangeNotifier;
 import org.altbeacon.beacon.Region;
 
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class MainNavActivity extends AppCompatActivity implements BeaconConsumer {
     private TextView mTextMessage;
     private BeaconManager beaconManager;
     public static final String TAG = "ndzl-iBeacon-Meter";
+    Timer tim;
 
     public static ConcurrentLinkedQueue<Collection<Beacon>> clqBeacons = new ConcurrentLinkedQueue<>();
 
@@ -58,7 +65,8 @@ public class MainNavActivity extends AppCompatActivity implements BeaconConsumer
                     replaceFragment(fr_ONE);
                     return true;
                 case R.id.navigation_notifications:
-
+                    Fragment fr_INFO = new Fragment_BeaconInfo();
+                    replaceFragment(fr_INFO);
                     return true;
             }
             return false;
@@ -90,6 +98,24 @@ public class MainNavActivity extends AppCompatActivity implements BeaconConsumer
         Fragment fr_ALL = new Fragment_Allbeacons();
         replaceFragment(fr_ALL);
         mTextMessage.setText("");
+
+
+        /*
+        tim = new Timer("NIK", false);
+        tim.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+
+                });
+            }
+        }, 100, 1000);
+        */
+
     }
 
     @Override
@@ -111,8 +137,21 @@ public class MainNavActivity extends AppCompatActivity implements BeaconConsumer
         return super.onKeyDown(keyCode, event);
     }
 
+    static Map<String,String> mapInfoBeaconManager = new HashMap<>();
     void startBeaconLibrary(){
         beaconManager = BeaconManager.getInstanceForApplication(this);
+
+        beaconManager.setForegroundScanPeriod(300); //speed! default is 1100ms //n.DZL
+
+        mapInfoBeaconManager.put("Availability", ""+beaconManager.checkAvailability());
+        mapInfoBeaconManager.put("BackgroundMode", ""+beaconManager.getBackgroundMode());
+        mapInfoBeaconManager.put("BackgroundScanPeriod", ""+beaconManager.getBackgroundScanPeriod());
+        mapInfoBeaconManager.put("BackgroundBetweenScanPeriod", ""+beaconManager.getBackgroundBetweenScanPeriod());
+        mapInfoBeaconManager.put("RangedRegions", ""+beaconManager.getRangedRegions().size());
+        mapInfoBeaconManager.put("RangingNotifiers", ""+beaconManager.getRangingNotifiers().size());
+        mapInfoBeaconManager.put("ForegroundScanPeriod", ""+beaconManager.getForegroundScanPeriod());
+        mapInfoBeaconManager.put("ForegroundBetweenScanPeriod", ""+beaconManager.getForegroundBetweenScanPeriod());
+        mapInfoBeaconManager.put("ForegroundServiceNotificationId", ""+beaconManager.getForegroundServiceNotificationId());
 
         beaconManager.getBeaconParsers().add(new BeaconParser()
                 .setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"));
@@ -121,7 +160,7 @@ public class MainNavActivity extends AppCompatActivity implements BeaconConsumer
     }
 
 
-    int resetcounter=8;
+    int resetcounter=3;
     int resetrows=10;
 
     String toBePrinted = "x";
@@ -174,7 +213,7 @@ public class MainNavActivity extends AppCompatActivity implements BeaconConsumer
                     if(resetcounter--==0){
                         maxRssi=-1000;
                         maxRSSI_mac="";
-                        resetcounter=8;
+                        resetcounter=3;
                     }
 
                     for (Object _b : beacons) {
@@ -185,8 +224,10 @@ public class MainNavActivity extends AppCompatActivity implements BeaconConsumer
                             maxRssi = ((Beacon)_b).getRssi();
                             maxRSSI_mac = btAddr.substring(12);
                         }
+                        Calendar ct = Calendar.getInstance();
 
-                        PrintOnScreen(btAddr+" "+bRssi+" dBm");
+
+                        PrintOnScreen(btAddr+" "+bRssi+" dBm @"+ct.get(Calendar.MINUTE)+"'"+ct.get(Calendar.SECOND)+"\"");
                         Log.i(TAG, " "+btAddr+" "+bRssi+" dBm");
 
                     }
