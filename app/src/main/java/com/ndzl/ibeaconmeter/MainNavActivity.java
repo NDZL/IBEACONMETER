@@ -219,6 +219,8 @@ public class MainNavActivity extends AppCompatActivity implements BeaconConsumer
                     for (Object _b : beacons) {
                         String btAddr = ((Beacon)_b).getBluetoothAddress();
                         String bRssi = ""+((Beacon)_b).getRssi();
+                        String bBattery = ""+ ((Beacon)_b).getId3();
+                       // String bName = ""+ ((Beacon)_b).getBluetoothName();
 
                         if(((Beacon)_b).getRssi()>maxRssi){
                             maxRssi = ((Beacon)_b).getRssi();
@@ -227,7 +229,7 @@ public class MainNavActivity extends AppCompatActivity implements BeaconConsumer
                         Calendar ct = Calendar.getInstance();
 
 
-                        PrintOnScreen(btAddr+" "+bRssi+" dBm @"+ct.get(Calendar.MINUTE)+"'"+ct.get(Calendar.SECOND)+"\"");
+                        PrintOnScreen(btAddr+" "+bRssi+" dBm @"+ct.get(Calendar.MINUTE)+"'"+ct.get(Calendar.SECOND)+"\" btry:"+bBattery+"%");
                         Log.i(TAG, " "+btAddr+" "+bRssi+" dBm");
 
                     }
