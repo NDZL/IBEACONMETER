@@ -221,6 +221,7 @@ public class MainNavActivity extends AppCompatActivity implements BeaconConsumer
                         String bRssi = ""+((Beacon)_b).getRssi();
                         String bBattery = ""+ ((Beacon)_b).getId3();
                        // String bName = ""+ ((Beacon)_b).getBluetoothName();
+                       // String bTxPow = ""+((Beacon)_b).getTxPower();  //The calibrated measured Tx power of the Beacon in RSSI This value is baked into an Beacon when it is manufactured, and it is transmitted with each packet to aid in the mDistance estimate
 
                         if(((Beacon)_b).getRssi()>maxRssi){
                             maxRssi = ((Beacon)_b).getRssi();
