@@ -1,7 +1,7 @@
 package com.ndzl.ibeaconmeter;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 public class NameViewModel extends ViewModel {
 
